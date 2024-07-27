@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./resources/css/styles.css">
+    <title>Alien Poker</title>
+</head>
+<body>
+    <div id="nav-bar">
+        <a>Home</a>
+        <p>Alien Poker</p>
+        <a>About</a>
+    </div>
+    <div id="header">
+        <h1>Alien Poker</h1>
+        <p>Rules: </p>
+    </div>
+    <div id="box">
+        <div id="stats">
+            <p>Glorbles: <span id="glorbles"></span></p>
+            <p>Dealer Glorbles: <span id="dealer-glorbles"></span></p>
+            <a>Cash Out</a>
+        </div>
+        <div id="game-window">
+            <div id="dealers-hand">
+                <p>Dealer's Hand:</p>
+                <div id="dealers-cards">
+                    <img id="card1" class="card" src="./resources/images/card-back1.jpg">
+                    <img id="card2" class="card" src="./resources/images/card-back1.jpg">
+                    <img id="card3" class="card" src="./resources/images/card-back1.jpg">
+                </div>
+            </div>
+            <div id="pot-box">
+                <p>Pot: <span id="pot"></span></p>
+            </div>
+            <div id="flop">
+                <div id="flop-cards">
+                    <img id="flop1" class="card" src="./resources/images/card-back1.jpg">
+                    <img id="flop2" class="card" src="./resources/images/card-back1.jpg">
+                    <img id="flop3" class="card" src="./resources/images/card-back1.jpg">
+                    <img id="flop4" class="card" src="./resources/images/card-back1.jpg">
+                    <img id="flop5" class="card" src="./resources/images/card-back1.jpg">
+                </div>
+            </div>
+            <div id="player-area">
+                <p>Your hand:</p>
+                <div id="your-cards">
+                    <img id="your-card1" class="card your-cards" src="./resources/images/card-back1.jpg">
+                    <img id="your-card2" class="card your-cards" src="./resources/images/card-back1.jpg">
+                    <img id="your-card3" class="card your-cards" src="./resources/images/card-back1.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="buttons">
+        <button id="bet-10" class="bet-button">Bet 10G</button>
+        <button id="bet-max" class="bet-button">Bet MAX</button>
+        <button id="fold" class="bet-button">Fold</button>
+    </div>
+    <div id="more-buttons">
+        <button id="reset-bet">Reset bet</button>
+        <button id="check" class="bet-button">Check</button>
+        <button id="play">Play</button>
+    </div>
+    <div id="info"></div>
+</body>
+<script src="./resources/javascript/script.js"></script>
+</html>
