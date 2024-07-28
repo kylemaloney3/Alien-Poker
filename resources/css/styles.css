@@ -87,19 +87,20 @@
 
 #dealers-hand {
     height: 35px;
-    width: 65px;
+    width: 30%;
+    background-color: greenyellow;
 }
 #dealers-hand > p {
     color: black;
     display: flex;
     background-color: greenyellow;
-    width: 150px;
+    width: 100%;
     padding: 15px 0 15px 15px;
 }
 #dealers-cards {
     background-color: greenyellow;
     margin: 0 0 15px 15px;
-    width: 250px;
+    width: 100%;
     height: 100px;
     display: flex;
     justify-content: space-evenly;
@@ -113,14 +114,14 @@
 /* flop */
 
 #flop {
-    width: 565px;
+    width: 60%;
     height: 165px;
-    background-color: white;
+    background-color: greenyellow;
     display: flex;
     margin: 130px auto 0;
 }
 #flop-cards {
-    width: 565px;
+    width: 100%;
     height: 165px;
     background-color: greenyellow;
     display: flex;
