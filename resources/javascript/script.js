@@ -307,6 +307,8 @@ function shuffleArray(cards) {
     }
 };
 
+/* variables for cards */
+
 const yourCards = document.getElementsByClassName('your-cards');
 const yourCard1 = document.getElementById('your-card1');
 const yourCard2 = document.getElementById('your-card2');
@@ -326,7 +328,7 @@ let currentCardIndex = 0;
 
 shuffleArray(cards);
 
-betButtonClicked = false;
+/* bet buttons clicked */
 
 const betButtons = document.querySelectorAll('.bet-button');
 betButtons.forEach((betButton) => {
@@ -335,14 +337,21 @@ betButtons.forEach((betButton) => {
   });
 });
 
+betButtonClicked = false;
+
+/* play button */
+
 let userHand = [];
 let flop = [];
 let dealerHand = [];
 let round = 0;
 
 const playButton = document.getElementById('play');
+const nextHandButton = document.getElementById('next-hand');
+nextHandButton.style.display = 'none';
 
 playButton.addEventListener('click', () => {
+    info.textContent = '';
     if (round === 0) {
         if (currentCardIndex < cards.length) {
             const currentCard = cards[currentCardIndex];
@@ -350,10 +359,7 @@ playButton.addEventListener('click', () => {
               yourCard1.src = currentCard.imageUrl;
               currentCardIndex++;
               userHand.push(currentCard);
-            } else {
-              console.log('card missing');
             }
-        
             if (currentCardIndex < cards.length) {
               const nextCard = cards[currentCardIndex];
               if (nextCard && nextCard.imageUrl) {
@@ -362,7 +368,6 @@ playButton.addEventListener('click', () => {
                 userHand.push(nextCard);
               }
             }
-        
             if (currentCardIndex < cards.length) {
               const finalCard = cards[currentCardIndex];
               if (finalCard && finalCard.imageUrl) {
@@ -379,11 +384,13 @@ playButton.addEventListener('click', () => {
             dealerCard1.src = backOfCards;
             dealerCard2.src = backOfCards;
             dealerCard3.src = backOfCards;
-          } else {
-            console.log('no more cards left');
           }
           playButton.disabled = true;
-          playButton.innerText = 'Play';
+          playButton.textContent = 'Please place a bet or check';
+          bet10.disabled = false;
+          betMaxButton.disabled = false;
+          resetButton.disabled = true;
+          betToReset.push(pot);
           round = 1;
     } else if (round === 1) {
         yourCard1.src = userHand[0].imageUrl;
@@ -395,10 +402,7 @@ playButton.addEventListener('click', () => {
               flopCard1.src = firstCard.imageUrl;
               currentCardIndex++;
               flop.push(firstCard);
-            } else {
-              console.log('card missing');
             }
-        
             if (currentCardIndex < cards.length) {
               const secondCard = cards[currentCardIndex];
               if (secondCard && secondCard.imageUrl) {
@@ -407,7 +411,6 @@ playButton.addEventListener('click', () => {
                 flop.push(secondCard);
               }
             }
-        
             if (currentCardIndex < cards.length) {
               const thirdCard = cards[currentCardIndex];
               if (thirdCard && thirdCard.imageUrl) {
@@ -416,10 +419,11 @@ playButton.addEventListener('click', () => {
                 flop.push(thirdCard);
               }
             }
-          } else {
-            console.log('no more cards left');
           }
           playButton.disabled = true;
+          playButton.textContent = 'Please place a bet or check';
+          resetButton.disabled = true;
+          betToReset.push(pot);
           round = 2;
     } else if (round === 2) {
         yourCard1.src = userHand[0].imageUrl;
@@ -434,13 +438,12 @@ playButton.addEventListener('click', () => {
               flopCard4.src = fourthCard.imageUrl;
               currentCardIndex++;
               flop.push(fourthCard);
-            } else {
-              console.log('card missing');
             }
-          } else {
-            console.log('no more cards left');
           }
           playButton.disabled = true;
+          playButton.textContent = 'Please place a bet or check';
+          resetButton.disabled = true;
+          betToReset.push(pot);
           round = 3;
     } else if (round === 3) {
         yourCard1.src = userHand[0].imageUrl;
@@ -456,13 +459,12 @@ playButton.addEventListener('click', () => {
                 flopCard5.src = fifthCard.imageUrl;
                 currentCardIndex++;
                 flop.push(fifthCard);
-            } else {
-                console.log('card missing');
             }
-        } else {
-            console.log('no more cards left');
         }
         playButton.disabled = true;
+        playButton.textContent = 'Please place a bet or check';
+        resetButton.disabled = true;
+        betToReset.push(pot);
         round = 4;
     } else if (round === 4) {
         yourCard1.src = userHand[0].imageUrl;
@@ -479,11 +481,7 @@ playButton.addEventListener('click', () => {
                 dealerCard1.src = dealer1.imageUrl;
                 currentCardIndex++;
                 dealerHand.push(dealer1);
-            } else {
-                console.log('card missing');
             }
-        } else {
-            console.log('no more cards left');
         }
         if (currentCardIndex < cards.length) {
             const dealer2 = cards[currentCardIndex];
@@ -491,11 +489,7 @@ playButton.addEventListener('click', () => {
                 dealerCard2.src = dealer2.imageUrl;
                 currentCardIndex++;
                 dealerHand.push(dealer2);
-            } else {
-                console.log('card missing');
             }
-        } else {
-            console.log('no more cards left');
         }
         if (currentCardIndex < cards.length) {
             const dealer3 = cards[currentCardIndex];
@@ -503,15 +497,17 @@ playButton.addEventListener('click', () => {
                 dealerCard3.src = dealer3.imageUrl;
                 currentCardIndex++;
                 dealerHand.push(dealer3);
-            } else {
-                console.log('card missing');
             }
-        } else {
-            console.log('no more cards left');
         }
         playButton.disabled = true;
-        playButton.innerText = 'Next Hand';
+        playButton.style.display = 'none';
+        nextHandButton.style.display = 'block';
+        bet10.disabled = true;
+        betMaxButton.disabled = true;
+        resetButton.disabled = true;
         round = 0;
+        currentBet = 0;
+        computerBet = 0;
         currentCardIndex = 0;
         checkHand(userHand, flop);
         shuffleArray(cards);
@@ -519,6 +515,38 @@ playButton.addEventListener('click', () => {
         flop = [];
         dealerHand = [];
     }
+});
+
+/* win game function */
+
+function winGame(glorblesTotal) {
+    if (glorblesTotal === 1000) {
+        info.textContent = 'Congratulations! You beat the dealer and won the game!';
+    }
+};
+
+/* next hand button */
+
+nextHandButton.addEventListener('click', () => {
+    yourCard1.src = backOfCards;
+    yourCard2.src = backOfCards;
+    yourCard3.src = backOfCards;
+    flopCard1.src = backOfCards;
+    flopCard2.src = backOfCards;
+    flopCard3.src = backOfCards;
+    flopCard4.src = backOfCards;
+    flopCard5.src = backOfCards;
+    dealerCard1.src = backOfCards;
+    dealerCard2.src = backOfCards;
+    dealerCard3.src = backOfCards;
+    glorblesTotal += pot;
+    glorblesDisplay.textContent = glorblesTotal;
+    pot = 0;
+    potDisplay.textContent = pot;
+    nextHandButton.style.display = 'none';
+    playButton.style.display = 'block';
+    playButton.disabled = false;
+    winGame(glorblesTotal);
 });
 
 /* bet 10 button */
@@ -539,7 +567,12 @@ potDisplay.textContent = pot;
 const betStats = [glorblesTotal, dealerGlorbles, pot];
 let betToReset = betStats;
 
+/* bet 10 button */
+
+bet10.disabled = true;
+
 bet10.addEventListener('click', () => {
+    pot = betToReset[2];
     currentBet += 10;
     computerBet += 10;
     glorblesTotal -= 10;
@@ -554,8 +587,10 @@ bet10.addEventListener('click', () => {
     }
     glorblesDisplay.textContent = glorblesTotal;
     dealerGlorblesDisplay.textContent = dealerGlorbles;
-    potDisplay.textContent = pot;
+    potDisplay.textContent = betToReset.pop();
     playButton.disabled = false;
+    playButton.textContent = 'Play';
+    resetButton.disabled = false;
 });
 
 /* bet max button */
@@ -563,13 +598,15 @@ bet10.addEventListener('click', () => {
 const betMaxButton = document.getElementById('bet-max');
 const info = document.getElementById('info');
 
+betMaxButton.disabled = true;
+
 betMaxButton.addEventListener('click', () => {
     if (glorblesTotal === 0) {
         info.innerText = 'You have no Glorbles to bet with!';
     }
     currentBet = glorblesTotal;
     computerBet = dealerGlorbles;
-    pot = currentBet + computerBet;
+    pot += currentBet + computerBet;
     betToReset.push(pot);
     glorblesTotal -= currentBet;
     dealerGlorbles -= computerBet;
@@ -579,6 +616,8 @@ betMaxButton.addEventListener('click', () => {
     betMaxButton.disabled = true;
     bet10.disabled = true;
     playButton.disabled = false;
+    playButton.textContent = 'Play';
+    resetButton.disabled = false;
 });
 
 /* fold button */
@@ -594,20 +633,44 @@ foldButton.addEventListener('click', () => {
 const resetButton = document.getElementById('reset-bet');
 
 resetButton.addEventListener('click', () => {
-    if (betButtonClicked) {
+    if (betButtonClicked && round === 0) {
         currentBet = 0;
         computerBet = 0;
         glorblesTotal = betToReset[0];
         dealerGlorbles = betToReset[1];
-        console.log(pot);
+        betToReset.push(pot);
         pot = betToReset[2];
-        console.log(pot);
-        glorblesDisplay.textContent = betToReset[0];
-        dealerGlorblesDisplay.textContent = betToReset[1];
+        betToReset.push(pot);
+        console.log("Pot Value: " + pot);
+        glorblesDisplay.textContent = glorblesTotal;
+        dealerGlorblesDisplay.textContent = dealerGlorbles;
         potDisplay.textContent = pot;
         bet10.disabled = false;
         betMaxButton.disabled = false;
-    } else {
+    } else if (betButtonClicked && round === 1) {
+        currentBet = 0;
+        computerBet = 0;
+        pot = betToReset.pop();
+        potDisplay.textContent = pot;
+        console.log("Pot Value: " + pot);
+    } else if (betButtonClicked && round === 2) {
+        currentBet = 0;
+        computerBet = 0;
+        pot = betToReset.pop();
+        potDisplay.textContent = pot;
+        console.log("Pot Value: " + pot);
+    } else if (betButtonClicked && round === 3) {
+        currentBet = 0;
+        computerBet = 0;
+        pot = betToReset.pop();
+        potDisplay.textContent = pot;
+        console.log("Pot Value: " + pot);
+    } else if (betButtonClicked && round === 4) {
+        currentBet = 0;
+        computerBet = 0;
+        pot = betToReset.pop();
+        potDisplay.textContent = pot;
+        console.log("Pot Value: " + pot);
         resetButton.disabled = true;
     }
 });
@@ -618,5 +681,8 @@ const checkButton = document.getElementById('check');
 
 checkButton.addEventListener('click', () => {
     playButton.disabled = false;
+    playButton.textContent = 'Play';
 });
   
+
+
